@@ -10,6 +10,7 @@ class ShodanEnricher(BaseEnricher):
     """Enricher for Shodan API"""
     
     BASE_URL = "https://api.shodan.io"
+    MAX_SERVICES_DISPLAY = 5  # Limit number of services shown
     
     def enrich(self, indicator, indicator_type=None):
         """
@@ -58,7 +59,7 @@ class ShodanEnricher(BaseEnricher):
                     'isp': data.get('isp', 'Unknown'),
                     'hostnames': data.get('hostnames', []),
                     'ports': ports,
-                    'services': services[:5],  # Limit to first 5 services
+                    'services': services[:self.MAX_SERVICES_DISPLAY],
                     'last_update': data.get('last_update', 'Unknown')
                 }
             elif response.status_code == 401:

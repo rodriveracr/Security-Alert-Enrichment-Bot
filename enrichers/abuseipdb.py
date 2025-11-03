@@ -10,6 +10,7 @@ class AbuseIPDBEnricher(BaseEnricher):
     """Enricher for AbuseIPDB API"""
     
     BASE_URL = "https://api.abuseipdb.com/api/v2"
+    MAX_AGE_DAYS = 90  # Maximum age for report history
     
     def enrich(self, indicator, indicator_type=None):
         """
@@ -32,7 +33,7 @@ class AbuseIPDBEnricher(BaseEnricher):
         
         params = {
             'ipAddress': indicator,
-            'maxAgeInDays': 90,
+            'maxAgeInDays': self.MAX_AGE_DAYS,
             'verbose': ''
         }
         
