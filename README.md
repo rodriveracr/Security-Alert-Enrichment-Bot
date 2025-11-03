@@ -1,4 +1,3 @@
-
 # Security Alert Enrichment Bot
 
 ## Propósito
@@ -7,21 +6,48 @@ Este proyecto permite enriquecer alertas de seguridad (IPs y dominios) consultan
 
 ## Idea principal
 
+- Recibir una IP o dominio sospechoso.
+- Consultar APIs externas (VirusTotal, AbuseIPDB, Shodan) para obtener información relevante.
+- Mostrar los resultados en una interfaz web sencilla y visual.
+- Permitir el uso de "mock" para pruebas sin consumir APIs reales.
 
 ## Ideas secundarias
 
+- Validación de formato de entrada (IP/Dominio).
+- Manejo de errores y mensajes claros para el usuario.
+- Visualización tipo "cards" para cada fuente de enriquecimiento.
+- Backend modular y fácil de extender con nuevos enriquecedores.
+- Uso de variables de entorno para las API keys.
 
 ## ¿Para qué sirve?
 
+- Para analistas SOC, Blue Team, o cualquier persona que investiga alertas de seguridad.
+- Para automatizar la consulta de reputación y detalles técnicos de IPs y dominios.
+- Para centralizar y visualizar información de múltiples fuentes en un solo lugar.
 
 ## ¿Por qué?
 
+- Reduce el tiempo de investigación manual.
+- Evita errores humanos al consultar múltiples fuentes.
+- Permite priorizar incidentes con mejor contexto.
+- Facilita la integración en flujos de trabajo de seguridad.
 
 ## Funcionalidades
 
+- Formulario web para ingresar IP o dominio.
+- Validación de formato y mensajes de error amigables.
+- Consulta real a APIs externas (VirusTotal, AbuseIPDB, Shodan).
+- Visualización de resultados enriquecidos.
+- Modo mock para pruebas y demostraciones.
+- Backend en Flask con CORS habilitado.
+- Frontend en HTML/CSS/JS, fácil de modificar.
 
 ## Tecnologías utilizadas
 
+- **Backend:** Python 3.11, Flask, Flask-CORS, requests, python-dotenv
+- **Frontend:** HTML5, CSS3, JavaScript
+- **APIs externas:** VirusTotal, AbuseIPDB, Shodan
+- **DevOps:** VS Code, Windows, PowerShell
 
 ## Estructura del proyecto
 
@@ -82,17 +108,18 @@ Security Alert Enrichment Bot/
 
 ## Personalización
 
+- Puedes agregar nuevos enriquecedores en `src/enrichers/`.
+- Modifica el frontend en `frontend/index.html`, `script.js` y `style.css`.
+- Cambia el puerto o IP en el backend y frontend según tu entorno.
 
 ## Contribución
 
+- Pull requests y sugerencias son bienvenidas.
+- Documenta tus cambios y sigue la estructura modular.
 
 ## Licencia
 
 MIT
 
-
+---
 **¡Listo para usar y mejorar!**
-=======
-# Security-Alert-Enrichment-Bot
-Security Alert Enrichment Bot: Enriches security alerts (IP/domain) using external APIs (VirusTotal, AbuseIPDB, Shodan) for rapid investigation and prioritization. Includes a Flask backend and HTML/JS frontend.
->>>>>>> 0702c99452dca4f5223d5724a6031330dbe4da3a
