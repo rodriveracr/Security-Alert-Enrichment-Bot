@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Alert Enrichment Bot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Security Alert Enrichment</h1>
+    <form id="enrich-form">
+      <label for="input-type">Tipo de entrada:</label>
+      <select id="input-type" name="input-type">
+        <option value="ip">IP</option>
+        <option value="domain">Dominio</option>
+      </select>
+      <input type="text" id="input-value" name="input-value" placeholder="Ingresa IP o dominio" required>
+      <button type="submit">Consultar</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "id": "alert-0001",
+  "timestamp": "2025-11-02T12:00:00Z",
+  "source_ip": "8.8.8.8",
+  "source_domain": "example.com",
+  "note": "Sample alert with an IP and domain to enrich"
+}

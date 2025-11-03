@@ -1,0 +1,46 @@
+# Enrichment Report
+
+## Alert
+
+- **id**: alert-0001
+- **timestamp**: 2025-11-02T12:00:00Z
+- **source_ip**: 8.8.8.8
+- **source_domain**: example.com
+- **note**: Sample alert with an IP and domain to enrich
+
+## Enrichment Summary
+
+- IP: 8.8.8.8
+- Domain: example.com
+
+## VirusTotal
+
+```json
+{
+  "note": "VT_API_KEY not set; returning mock result",
+  "indicator": "8.8.8.8",
+  "malicious": false,
+  "detected_engines": 0
+}
+```
+
+## AbuseIPDB
+
+```json
+{
+  "note": "ABUSEIPDB_KEY not set; returning mock result",
+  "ip": "8.8.8.8",
+  "abuseConfidenceScore": 0,
+  "countryCode": "US"
+}
+```
+
+## Shodan
+
+```json
+{
+  "note": "SHODAN_KEY not set; returning mock result",
+  "target": "8.8.8.8",
+  "ports": []
+}
+```
