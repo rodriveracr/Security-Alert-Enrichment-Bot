@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Security Alert Enrichment Bot
 
 ## Propósito
