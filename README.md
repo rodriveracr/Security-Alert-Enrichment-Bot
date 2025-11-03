@@ -1,55 +1,55 @@
 # Security Alert Enrichment Bot
 
-## Propósito
+## Purpose
 
-Este proyecto permite enriquecer alertas de seguridad (IPs y dominios) consultando fuentes externas para obtener reputación, reportes y detalles técnicos. El objetivo es facilitar la investigación y priorización de incidentes de seguridad de forma rápida y visual.
+This project enriches security alerts (IPs and domains) by querying external sources to obtain reputation, reports, and technical details. The goal is to facilitate rapid and visual investigation and prioritization of security incidents.
 
-## Idea principal
+## Main Idea
 
-- Recibir una IP o dominio sospechoso.
-- Consultar APIs externas (VirusTotal, AbuseIPDB, Shodan) para obtener información relevante.
-- Mostrar los resultados en una interfaz web sencilla y visual.
-- Permitir el uso de "mock" para pruebas sin consumir APIs reales.
+- Receive a suspicious IP or domain.
+- Query external APIs (VirusTotal, AbuseIPDB, Shodan) for relevant information.
+- Display results in a simple and visual web interface.
+- Allow "mock" mode for testing without consuming real APIs.
 
-## Ideas secundarias
+## Secondary Ideas
 
-- Validación de formato de entrada (IP/Dominio).
-- Manejo de errores y mensajes claros para el usuario.
-- Visualización tipo "cards" para cada fuente de enriquecimiento.
-- Backend modular y fácil de extender con nuevos enriquecedores.
-- Uso de variables de entorno para las API keys.
+- Input format validation (IP/Domain).
+- Error handling and clear user messages.
+- Card-style visualization for each enrichment source.
+- Modular backend, easy to extend with new enrichers.
+- Use environment variables for API keys.
 
-## ¿Para qué sirve?
+## Use Cases
 
-- Para analistas SOC, Blue Team, o cualquier persona que investiga alertas de seguridad.
-- Para automatizar la consulta de reputación y detalles técnicos de IPs y dominios.
-- Para centralizar y visualizar información de múltiples fuentes en un solo lugar.
+- For SOC analysts, Blue Team, or anyone investigating security alerts.
+- To automate reputation and technical detail queries for IPs and domains.
+- To centralize and visualize information from multiple sources in one place.
 
-## ¿Por qué?
+## Why?
 
-- Reduce el tiempo de investigación manual.
-- Evita errores humanos al consultar múltiples fuentes.
-- Permite priorizar incidentes con mejor contexto.
-- Facilita la integración en flujos de trabajo de seguridad.
+- Reduces manual investigation time.
+- Avoids human errors when consulting multiple sources.
+- Enables better incident prioritization with more context.
+- Facilitates integration into security workflows.
 
-## Funcionalidades
+## Features
 
-- Formulario web para ingresar IP o dominio.
-- Validación de formato y mensajes de error amigables.
-- Consulta real a APIs externas (VirusTotal, AbuseIPDB, Shodan).
-- Visualización de resultados enriquecidos.
-- Modo mock para pruebas y demostraciones.
-- Backend en Flask con CORS habilitado.
-- Frontend en HTML/CSS/JS, fácil de modificar.
+- Web form to enter IP or domain.
+- Input validation and friendly error messages.
+- Real queries to external APIs (VirusTotal, AbuseIPDB, Shodan).
+- Enriched results visualization.
+- Mock mode for testing and demos.
+- Flask backend with CORS enabled.
+- HTML/CSS/JS frontend, easy to modify.
 
-## Tecnologías utilizadas
+## Technologies Used
 
 - **Backend:** Python 3.11, Flask, Flask-CORS, requests, python-dotenv
 - **Frontend:** HTML5, CSS3, JavaScript
-- **APIs externas:** VirusTotal, AbuseIPDB, Shodan
+- **External APIs:** VirusTotal, AbuseIPDB, Shodan
 - **DevOps:** VS Code, Windows, PowerShell
 
-## Estructura del proyecto
+## Project Structure
 
 ```bash
 Security Alert Enrichment Bot/
@@ -66,16 +66,16 @@ Security Alert Enrichment Bot/
 └── README.md
 ```
 
-## Instalación y uso
+## Installation & Usage
 
-1. Clona el repositorio:
+1. Clone the repository:
 
    ```bash
-   git clone https://github.com/tuusuario/Security-Alert-Enrichment-Bot.git
+   git clone https://github.com/yourusername/Security-Alert-Enrichment-Bot.git
    cd Security-Alert-Enrichment-Bot
    ```
 
-2. Instala dependencias:
+2. Install dependencies:
 
    ```bash
    python -m venv venv
@@ -83,43 +83,43 @@ Security Alert Enrichment Bot/
    pip install -r requirements.txt
    ```
 
-3. Configura tus API keys en el archivo `.env`:
+3. Set your API keys in the `.env` file:
 
    ```env
-   VT_API_KEY=tu_key_virustotal
-   ABUSEIPDB_API_KEY=tu_key_abuseipdb
-   SHODAN_API_KEY=tu_key_shodan
+   VT_API_KEY=your_virustotal_key
+   ABUSEIPDB_API_KEY=your_abuseipdb_key
+   SHODAN_API_KEY=your_shodan_key
    ```
 
-4. Inicia el backend:
+4. Start the backend:
 
    ```bash
    python src/app.py
    ```
 
-5. Inicia el frontend:
+5. Start the frontend:
 
    ```bash
    cd frontend
    python -m http.server 8080
    ```
 
-6. Abre el navegador en `http://localhost:8080` y usa el formulario.
+6. Open your browser at `http://localhost:8080` and use the form.
 
-## Personalización
+## Customization
 
-- Puedes agregar nuevos enriquecedores en `src/enrichers/`.
-- Modifica el frontend en `frontend/index.html`, `script.js` y `style.css`.
-- Cambia el puerto o IP en el backend y frontend según tu entorno.
+- Add new enrichers in `src/enrichers/`.
+- Modify the frontend in `frontend/index.html`, `script.js`, and `style.css`.
+- Change the port or IP in the backend and frontend as needed.
 
-## Contribución
+## Contribution
 
-- Pull requests y sugerencias son bienvenidas.
-- Documenta tus cambios y sigue la estructura modular.
+- Pull requests and suggestions are welcome.
+- Document your changes and follow the modular structure.
 
-## Licencia
+## License
 
 MIT
 
 ---
-**¡Listo para usar y mejorar!**
+**Ready to use and improve!**
