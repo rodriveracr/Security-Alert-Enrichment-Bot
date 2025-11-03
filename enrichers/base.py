@@ -14,10 +14,9 @@ class BaseEnricher(ABC):
         
         Args:
             api_key (str): API key for the threat intelligence service
+                          Can be None to allow graceful degradation
         """
         self.api_key = api_key
-        if not self.api_key:
-            raise ValueError(f"{self.__class__.__name__} requires an API key")
     
     @abstractmethod
     def enrich(self, indicator, indicator_type=None):

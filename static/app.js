@@ -321,15 +321,31 @@ function isValidIP(ip) {
 
 function isValidDomain(domain) {
     // Simple domain validation without ReDoS vulnerability
-    // Check basic format: alphanumeric with dots and hyphens
-    if (domain.length > 253) return false;
-    
-    const domainPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
-    
-    // Additional check: no consecutive dots or hyphens at start/end of labels
-    if (domain.includes('..') || domain.includes('-.') || domain.includes('.-')) {
+    // Check basic format and length constraints
+    if (!domain || domain.length < 3 || domain.length > 253) {
         return false;
     }
     
-    return domainPattern.test(domain);
+    // Check for invalid characters or patterns
+    if (domain.includes('..') || domain.startsWith('.') || domain.endsWith('.') ||
+        domain.startsWith('-') || domain.endsWith('-')) {
+        return false;
+    }
+    
+    // Split into labels and validate each label
+    const labels = domain.split('.');
+    if (labels.length < 2) return false;
+    
+    // Validate each label
+    for (const label of labels) {
+        if (label.length === 0 || label.length > 63) return false;
+        if (!/^[a-zA-Z0-9-]+$/.test(label)) return false;
+        if (label.startsWith('-') || label.endsWith('-')) return false;
+    }
+    
+    // Last label should be at least 2 characters (TLD)
+    const tld = labels[labels.length - 1];
+    if (tld.length < 2 || !/^[a-zA-Z]+$/.test(tld)) return false;
+    
+    return true;
 }
