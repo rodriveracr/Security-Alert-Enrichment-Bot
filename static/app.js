@@ -320,6 +320,16 @@ function isValidIP(ip) {
 }
 
 function isValidDomain(domain) {
-    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*\.[a-zA-Z]{2,}$/;
+    // Simple domain validation without ReDoS vulnerability
+    // Check basic format: alphanumeric with dots and hyphens
+    if (domain.length > 253) return false;
+    
+    const domainPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+    
+    // Additional check: no consecutive dots or hyphens at start/end of labels
+    if (domain.includes('..') || domain.includes('-.') || domain.includes('.-')) {
+        return false;
+    }
+    
     return domainPattern.test(domain);
 }

@@ -91,7 +91,9 @@ def enrich_alert():
         return jsonify(enrichment_data), 200
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Log the error for debugging but don't expose stack trace to user
+        app.logger.error(f"Error enriching indicator: {str(e)}")
+        return jsonify({'error': 'An error occurred while enriching the indicator'}), 500
 
 
 @app.route('/api/health', methods=['GET'])
