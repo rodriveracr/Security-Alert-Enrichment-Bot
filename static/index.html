@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Alert Enrichment Bot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ Security Alert Enrichment Bot</h1>
+            <p class="subtitle">Enrich security alerts using VirusTotal, AbuseIPDB, and Shodan</p>
+        </header>
+
+        <div class="input-section">
+            <div class="form-group">
+                <label for="indicator">IP Address or Domain:</label>
+                <input type="text" id="indicator" placeholder="e.g., 8.8.8.8 or example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="type">Indicator Type:</label>
+                <select id="type">
+                    <option value="ip">IP Address</option>
+                    <option value="domain">Domain</option>
+                </select>
+            </div>
+
+            <button id="enrichBtn" class="btn-primary">Enrich Alert</button>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Enriching security alert...</p>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+
+        <div id="results" class="results hidden">
+            <h2>Enrichment Results</h2>
+            
+            <div class="indicator-info">
+                <h3>Indicator Information</h3>
+                <div class="info-row">
+                    <span class="label">Indicator:</span>
+                    <span id="result-indicator" class="value"></span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Type:</span>
+                    <span id="result-type" class="value"></span>
+                </div>
+            </div>
+
+            <!-- VirusTotal Results -->
+            <div id="vt-section" class="result-card">
+                <h3>🦠 VirusTotal</h3>
+                <div id="vt-content"></div>
+            </div>
+
+            <!-- AbuseIPDB Results -->
+            <div id="abuseipdb-section" class="result-card hidden">
+                <h3>🚨 AbuseIPDB</h3>
+                <div id="abuseipdb-content"></div>
+            </div>
+
+            <!-- Shodan Results -->
+            <div id="shodan-section" class="result-card hidden">
+                <h3>🔍 Shodan</h3>
+                <div id="shodan-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Security Alert Enrichment Bot | <a href="/api/health" target="_blank">API Health Check</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
