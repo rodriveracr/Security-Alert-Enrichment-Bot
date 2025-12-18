@@ -4,22 +4,109 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Security Alert Enrichment Bot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="header">
+    <div class="header-content">
+      <h1><i class="fas fa-shield-alt"></i> Security Alert Enrichment Bot</h1>
+      <p>Enrich security alerts with intelligence from multiple sources</p>
+    </div>
+  </header>
+
   <div class="container">
-    <h1>Security Alert Enrichment</h1>
-    <form id="enrich-form">
-      <label for="input-type">Tipo de entrada:</label>
-      <select id="input-type" name="input-type">
-        <option value="ip">IP</option>
-        <option value="domain">Dominio</option>
-      </select>
-      <input type="text" id="input-value" name="input-value" placeholder="Ingresa IP o dominio" required>
-      <button type="submit">Consultar</button>
-    </form>
-    <div id="result"></div>
+    <div class="main-section">
+      <div class="form-section">
+        <h2>Analyze Indicator</h2>
+        <form id="enrich-form">
+          <div class="form-group">
+            <label for="input-type">Indicator Type:</label>
+            <select id="input-type" name="input-type">
+              <option value="ip">IP Address</option>
+              <option value="domain">Domain</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="input-value">Enter Indicator:</label>
+            <input type="text" id="input-value" name="input-value" placeholder="e.g., 1.1.1.1 or example.com" required>
+            <small>Tip: Use "mock" to see demo data</small>
+          </div>
+          <div class="button-group">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-search"></i> Analyze
+            </button>
+            <button type="reset" class="btn-secondary" onclick="resetForm()">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="tech-section">
+        <h2>Intelligence Sources</h2>
+        <div class="tech-card">
+          <h3><i class="fas fa-virus"></i> VirusTotal</h3>
+          <p class="tech-description">Aggregates data from 90+ antivirus engines and malware databases</p>
+          <h4>What we get:</h4>
+          <ul class="tech-list">
+            <li><strong>Detected URLs:</strong> Number of malicious URLs associated</li>
+            <li><strong>Reputation:</strong> Overall threat reputation score</li>
+          </ul>
+          <p class="tech-logic"><em>Logic:</em> Identifies if the indicator has been flagged as malicious by multiple security vendors</p>
+        </div>
+        <div class="tech-card">
+          <h3><i class="fas fa-flag"></i> AbuseIPDB</h3>
+          <p class="tech-description">Crowdsourced database of reported malicious IP addresses</p>
+          <h4>What we get:</h4>
+          <ul class="tech-list">
+            <li><strong>Abuse Score:</strong> 0-100 confidence score of malicious activity</li>
+            <li><strong>Reports:</strong> Number of community reports filed against the IP</li>
+          </ul>
+          <p class="tech-logic"><em>Logic:</em> Determines risk level based on community submissions and abuse patterns</p>
+        </div>
+        <div class="tech-card">
+          <h3><i class="fas fa-server"></i> Shodan</h3>
+          <p class="tech-description">Internet-wide port scanner and service discovery engine</p>
+          <h4>What we get:</h4>
+          <ul class="tech-list">
+            <li><strong>Open Ports:</strong> List of publicly accessible ports</li>
+            <li><strong>Organization:</strong> ISP or organization owning the IP</li>
+          </ul>
+          <p class="tech-logic"><em>Logic:</em> Maps network exposure and identifies potential attack vectors through open ports</p>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <details id="about" open>
+          <summary><i class="fas fa-info-circle"></i> How to Use & Field Descriptions</summary>
+          <div class="details-content">
+            <h3>About This Tool</h3>
+            <p>This application enriches security alerts (IPs or domains) by querying multiple external threat intelligence sources and providing a clear summary for security analysts.</p>
+            
+            <h4>Field Descriptions</h4>
+            <ul class="field-list">
+              <li><strong>Type:</strong> Whether the indicator is an <em>IP Address</em> or a <em>Domain</em></li>
+              <li><strong>Value:</strong> The indicator being queried (e.g., <code>1.1.1.1</code>)</li>
+              <li><strong>VirusTotal - Detected URLs:</strong> Number of malicious URLs related to the indicator</li>
+              <li><strong>VirusTotal - Reputation:</strong> Reputation score from VirusTotal (higher = more suspicious)</li>
+              <li><strong>AbuseIPDB - Score:</strong> Abuse confidence score (0-100), higher indicates greater abuse probability</li>
+              <li><strong>AbuseIPDB - Reports:</strong> Total accumulated reports in AbuseIPDB for the IP</li>
+              <li><strong>Shodan - Open Ports:</strong> Open ports detected by Shodan on the IP (if applicable)</li>
+              <li><strong>Shodan - Organization:</strong> IP owner organization according to Shodan</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div id="result" class="result-section"></div>
   </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Security Alert Enrichment Bot | Powered by VirusTotal, AbuseIPDB & Shodan</p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>

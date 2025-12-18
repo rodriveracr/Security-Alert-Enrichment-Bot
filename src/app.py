@@ -1,20 +1,29 @@
 
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 import os
-from enrichers.virustotal import enrich_virustotal
-from enrichers.abuseipdb import enrich_abuseipdb
-from enrichers.shodan_api import enrich_shodan
+from pathlib import Path
+from src.enrichers.virustotal import vt_lookup
+from src.enrichers.abuseipdb import abuse_lookup
+from src.enrichers.shodan_api import shodan_lookup
 from flask_cors import CORS
 
-app = Flask(__name__)
+# Obtener la ruta base del proyecto
+BASE_DIR = Path(__file__).resolve().parents[1]
+FRONTEND_DIR = BASE_DIR / "frontend"
+
+app = Flask(__name__, static_folder=str(FRONTEND_DIR), static_url_path='')
 CORS(app)
 load_dotenv()
 
 @app.route("/")
 def home():
-    return "Security Alert Enrichment Bot backend activo. Usa el endpoint /enrich con POST."
+    return send_from_directory(str(FRONTEND_DIR), 'index.html')
+
+@app.route('/<path:path>')
+def static_files(path):
+    return send_from_directory(str(FRONTEND_DIR), path)
 
 @app.route('/enrich', methods=['POST'])
 def enrich():
@@ -24,9 +33,9 @@ def enrich():
     results = {}
 
     if input_type == 'ip' or input_type == 'domain':
-        results['virustotal'] = enrich_virustotal(value)
-        results['abuseipdb'] = enrich_abuseipdb(value) if input_type == 'ip' else None
-        results['shodan'] = enrich_shodan(value) if input_type == 'ip' else None
+        results['virustotal'] = vt_lookup(value)
+        results['abuseipdb'] = abuse_lookup(value) if input_type == 'ip' else None
+        results['shodan'] = shodan_lookup(value) if input_type == 'ip' else None
         return jsonify({
             'input_type': input_type,
             'value': value,

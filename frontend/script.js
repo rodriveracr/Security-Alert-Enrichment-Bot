@@ -3,88 +3,144 @@ document.getElementById('enrich-form').addEventListener('submit', async function
   const type = document.getElementById('input-type').value;
   const value = document.getElementById('input-value').value.trim();
   const resultDiv = document.getElementById('result');
-  resultDiv.textContent = '';
+  resultDiv.innerHTML = '';
 
-  // Validación básica
+  // Basic validation
   if (!value) {
-    resultDiv.textContent = 'Por favor ingresa un valor.';
+    showError(resultDiv, 'Please enter an indicator value.');
     return;
   }
-  // Permitir mock sin validar formato
-    const BACKEND_URL = 'http://127.0.0.1:5001/enrich'; // Cambia aquí si usas otra IP/puerto
-    if (value.toLowerCase() !== "mock") {
+
+  const BACKEND_URL = 'http://127.0.0.1:5001/enrich';
+
+  // Validate format (skip for mock)
+  if (value.toLowerCase() !== 'mock') {
     if (type === 'ip' && !/^([0-9]{1,3}\.){3}[0-9]{1,3}$/.test(value)) {
-      resultDiv.textContent = 'Formato de IP inválido.';
+      showError(resultDiv, 'Invalid IP address format.');
       return;
     }
     if (type === 'domain' && !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value)) {
-      resultDiv.textContent = 'Formato de dominio inválido.';
+      showError(resultDiv, 'Invalid domain format.');
       return;
     }
   }
 
-  resultDiv.textContent = 'Consultando...';
+  resultDiv.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Analyzing indicator</div>';
+
   try {
-    // Modo mock: si el valor es "mock", mostrar datos simulados
-    if (value.toLowerCase() === "mock") {
+    // Mock mode
+    if (value.toLowerCase() === 'mock') {
       const mockData = {
         input_type: type,
-        value: value,
+        value: 'mock-data',
         results: {
-          virustotal: { detected_urls: 2, reputation: "malicious" },
-          abuseipdb: type === "ip" ? { score: 85, reports: 12 } : null,
-          shodan: type === "ip" ? { open_ports: [22, 80], org: "Mock ISP" } : null
+          virustotal: { detected_urls: 5, reputation: 45 },
+          abuseipdb: type === 'ip' ? { score: 25, reports: 3 } : null,
+          shodan: type === 'ip' ? { open_ports: [22, 80, 443, 8080], org: 'Demo ISP Inc.' } : null
         }
       };
       resultDiv.innerHTML = renderResults(mockData, true);
       return;
     }
-    // ...consulta real...
-      const response = await fetch(BACKEND_URL, {
+
+    // Real query
+    const response = await fetch(BACKEND_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, value })
     });
+
     if (!response.ok) {
-        let errorText = await response.text();
-        throw new Error('Error en la consulta: ' + errorText);
+      let errorText = await response.text();
+      throw new Error('Query error: ' + errorText);
     }
+
     const data = await response.json();
-    // Formatear resultado visual
     if (data && typeof data === 'object') {
       resultDiv.innerHTML = renderResults(data, false);
     } else {
-      resultDiv.textContent = 'Sin datos para mostrar.';
+      showError(resultDiv, 'No data returned.');
     }
   } catch (err) {
-      if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
-        resultDiv.textContent = 'Error de red o CORS: No se pudo conectar al backend. Verifica que el backend esté activo y accesible en ' + BACKEND_URL;
-      } else {
-        resultDiv.textContent = 'Error: ' + err.message;
-      }
+    if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
+      showError(resultDiv, `Network error: Cannot connect to backend at ${BACKEND_URL}. Make sure the backend is running.`);
+    } else {
+      showError(resultDiv, `Error: ${err.message}`);
+    }
   }
 });
 
-// Renderizador visual de resultados enriquecidos
+function showError(container, message) {
+  container.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> ${message}</div>`;
+}
+
+function resetForm() {
+  document.getElementById('enrich-form').reset();
+  document.getElementById('result').innerHTML = '';
+}
+
+// Render enriched results
 function renderResults(data, isMock) {
-  let html = `<b>Resultado${isMock ? ' (Mock)' : ''}:</b><br>`;
-  html += `<div class="result-card"><b>Tipo:</b> ${data.input_type}<br><b>Valor:</b> ${data.value}</div>`;
+  const icon = isMock ? '<i class="fas fa-vial"></i>' : '<i class="fas fa-check-circle"></i>';
+  const statusClass = isMock ? 'mock' : 'real';
+  const statusText = isMock ? 'Demo Data' : 'Real Data';
+
+  let html = `
+    <div class="result-card">
+      <div class="result-header">
+        ${icon} Analysis Results
+        <span class="result-status ${statusClass}">${statusText}</span>
+      </div>
+      <p><strong>Type:</strong> ${data.input_type === 'ip' ? 'IP Address' : 'Domain'}</p>
+      <p><strong>Indicator:</strong> <code>${data.value}</code></p>
+    </div>
+  `;
+
   if (data.results) {
+    // VirusTotal Results
     if (data.results.virustotal) {
-      html += `<div class="result-card"><b>VirusTotal</b><br>`;
-      html += `<b>Detected URLs:</b> ${data.results.virustotal.detected_urls}<br>`;
-      html += `<b>Reputation:</b> ${data.results.virustotal.reputation}</div>`;
+      const vt = data.results.virustotal;
+      html += `
+        <div class="result-card">
+          <h3><i class="fas fa-virus"></i> VirusTotal</h3>
+          <p><strong>Detected URLs:</strong> ${vt.detected_urls || 'N/A'}</p>
+          <p><strong>Reputation Score:</strong> ${vt.reputation || 'N/A'}</p>
+          ${vt.detected_urls > 0 ? '<p style="color: #dc2626;"><strong>⚠️ Warning:</strong> Malicious URLs detected!</p>' : ''}
+        </div>
+      `;
     }
+
+    // AbuseIPDB Results
     if (data.results.abuseipdb) {
-      html += `<div class="result-card"><b>AbuseIPDB</b><br>`;
-      html += `<b>Score:</b> ${data.results.abuseipdb.score}<br>`;
-      html += `<b>Reports:</b> ${data.results.abuseipdb.reports}</div>`;
+      const abuse = data.results.abuseipdb;
+      const riskLevel = abuse.score > 75 ? 'Critical' : abuse.score > 50 ? 'High' : abuse.score > 25 ? 'Medium' : 'Low';
+      const riskColor = riskLevel === 'Critical' ? '#dc2626' : riskLevel === 'High' ? '#f59e0b' : riskLevel === 'Medium' ? '#eab308' : '#22c55e';
+      
+      html += `
+        <div class="result-card">
+          <h3><i class="fas fa-flag"></i> AbuseIPDB</h3>
+          <p><strong>Abuse Score:</strong> <span style="color: ${riskColor}; font-weight: bold;">${abuse.score}/100 (${riskLevel} Risk)</span></p>
+          <p><strong>Total Reports:</strong> ${abuse.reports || 0}</p>
+          ${abuse.score > 50 ? `<p style="color: ${riskColor};"><strong>⚠️ Alert:</strong> This IP has a high abuse score!</p>` : ''}
+        </div>
+      `;
     }
+
+    // Shodan Results
     if (data.results.shodan) {
-      html += `<div class="result-card"><b>Shodan</b><br>`;
-      html += `<b>Open Ports:</b> ${Array.isArray(data.results.shodan.open_ports) ? data.results.shodan.open_ports.join(', ') : ''}<br>`;
-      html += `<b>Org:</b> ${data.results.shodan.org}</div>`;
+      const shodan = data.results.shodan;
+      const ports = Array.isArray(shodan.open_ports) ? shodan.open_ports.join(', ') : (shodan.open_ports || 'N/A');
+      
+      html += `
+        <div class="result-card">
+          <h3><i class="fas fa-server"></i> Shodan</h3>
+          <p><strong>Open Ports:</strong> ${ports}</p>
+          <p><strong>Organization:</strong> ${shodan.org || 'N/A'}</p>
+          ${shodan.open_ports && shodan.open_ports.length > 5 ? `<p style="color: #f59e0b;"><strong>ℹ️ Note:</strong> Multiple open ports detected</p>` : ''}
+        </div>
+      `;
     }
   }
+
   return html;
 }
