@@ -1,5 +1,12 @@
 # Virtual environment
 venv/
+.venv/
+
+# Local editor files
+.vscode/
+
+# Test cache
+.pytest_cache/
 
 # Environment file
 .env

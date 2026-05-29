@@ -1,81 +1,69 @@
 # Security Alert Enrichment Bot
 
-## Purpose
+## Espanol
 
-This project enriches security alerts (IPs and domains) by querying external sources to obtain reputation, reports, and technical details. The goal is to facilitate rapid and visual investigation and prioritization of security incidents.
+### Proposito
 
-## Main Idea
+Este proyecto enriquece alertas de seguridad, como IPs y dominios, consultando fuentes externas para obtener reputacion, reportes y detalles tecnicos. El objetivo es acelerar la investigacion y ayudar a priorizar incidentes de forma visual.
 
-- Receive a suspicious IP or domain.
-- Query external APIs (VirusTotal, AbuseIPDB, Shodan) for relevant information.
-- Display results in a simple and visual web interface.
-- Allow "mock" mode for testing without consuming real APIs.
+### Que hace
 
-## Secondary Ideas
+- Recibe una IP o dominio sospechoso.
+- Consulta APIs externas como VirusTotal, AbuseIPDB y Shodan.
+- Muestra los resultados en una interfaz web simple y visual.
+- Incluye modo mock para probar sin consumir APIs reales.
 
-- Input format validation (IP/Domain).
-- Error handling and clear user messages.
-- Card-style visualization for each enrichment source.
-- Modular backend, easy to extend with new enrichers.
-- Use environment variables for API keys.
+### Funcionalidades
 
-## Use Cases
+- Validacion de entrada para IP y dominio.
+- Mensajes de error claros.
+- Vista tipo tarjeta para cada fuente de enriquecimiento.
+- Backend modular y facil de extender.
+- Uso de variables de entorno para las claves de API.
 
-- For SOC analysts, Blue Team, or anyone investigating security alerts.
-- To automate reputation and technical detail queries for IPs and domains.
-- To centralize and visualize information from multiple sources in one place.
+### Casos de uso
 
-## Why?
+- Analistas SOC, equipos Blue Team o cualquier persona que investigue alertas de seguridad.
+- Automatizar consultas de reputacion y contexto tecnico para IPs y dominios.
+- Centralizar y visualizar informacion de varias fuentes en un solo lugar.
 
-- Reduces manual investigation time.
-- Avoids human errors when consulting multiple sources.
-- Enables better incident prioritization with more context.
-- Facilitates integration into security workflows.
+### Tecnologias
 
-## Features
+- Backend: Python 3.11, Flask, Flask-CORS, requests, python-dotenv
+- Frontend: HTML5, CSS3, JavaScript
+- APIs externas: VirusTotal, AbuseIPDB, Shodan
+- Entorno: VS Code, Windows, PowerShell
 
-- Web form to enter IP or domain.
-- Input validation and friendly error messages.
-- Real queries to external APIs (VirusTotal, AbuseIPDB, Shodan).
-- Enriched results visualization.
-- Mock mode for testing and demos.
-- Flask backend with CORS enabled.
-- HTML/CSS/JS frontend, easy to modify.
-
-## Technologies Used
-
-- **Backend:** Python 3.11, Flask, Flask-CORS, requests, python-dotenv
-- **Frontend:** HTML5, CSS3, JavaScript
-- **External APIs:** VirusTotal, AbuseIPDB, Shodan
-- **DevOps:** VS Code, Windows, PowerShell
-
-## Project Structure
+### Estructura del proyecto
 
 ```bash
 Security Alert Enrichment Bot/
 ├── src/
 │   ├── app.py
+│   ├── main.py
 │   ├── enrichers/
 │   └── ...
 ├── frontend/
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
-├── .env
+├── data/
+├── reports/
 ├── requirements.txt
+├── dev-requirements.txt
 └── README.md
 ```
 
-## Installation & Usage
+### Instalacion y uso
 
-1. Clone the repository:
+1. Clona el repositorio:
 
    ```bash
-   git clone https://github.com/yourusername/Security-Alert-Enrichment-Bot.git
+   git clone https://github.com/rodriveracr/Security-Alert-Enrichment-Bot.git
    cd Security-Alert-Enrichment-Bot
    ```
 
-2. Install dependencies:
+2. Crea el entorno e instala dependencias:
 
    ```bash
    python -m venv venv
@@ -83,12 +71,133 @@ Security Alert Enrichment Bot/
    pip install -r requirements.txt
    ```
 
-3. Set your API keys in the `.env` file:
+   If you want to run tests or linting, also install the development dependencies:
+
+   ```bash
+   pip install -r dev-requirements.txt
+   ```
+
+3. Configura tus claves en `.env`:
 
    ```env
-   VT_API_KEY=your_virustotal_key
-   ABUSEIPDB_API_KEY=your_abuseipdb_key
-   SHODAN_API_KEY=your_shodan_key
+   VT_API_KEY=your_virustotal_api_key_here
+   ABUSEIPDB_KEY=your_abuseipdb_api_key_here
+   SHODAN_KEY=your_shodan_api_key_here
+   ```
+
+4. Inicia el backend:
+
+   ```bash
+   python src/app.py
+   ```
+
+5. Inicia el frontend:
+
+   ```bash
+   cd frontend
+   python -m http.server 8080
+   ```
+
+6. Abre `http://localhost:8080` en tu navegador.
+
+### Personalizacion
+
+- Agrega nuevos enrichers en `src/enrichers/`.
+- Modifica la interfaz en `frontend/index.html`, `frontend/script.js` y `frontend/style.css`.
+- Ajusta puertos o rutas segun lo necesites.
+
+### Contribucion
+
+- Se aceptan pull requests y sugerencias.
+- Mantén la estructura modular y documenta los cambios.
+
+### Licencia
+
+MIT
+
+## English
+
+### Purpose
+
+This project enriches security alerts, such as IPs and domains, by querying external sources to collect reputation, reports, and technical details. The goal is to speed up investigations and help teams prioritize incidents visually.
+
+### What it does
+
+- Accepts a suspicious IP or domain.
+- Queries external APIs such as VirusTotal, AbuseIPDB, and Shodan.
+- Displays results in a simple, visual web interface.
+- Includes a mock mode for testing without consuming real APIs.
+
+### Features
+
+- Input validation for IPs and domains.
+- Clear error messages.
+- Card-style visualization for each enrichment source.
+- Modular backend that is easy to extend.
+- Environment variables for API keys.
+
+### Use cases
+
+- SOC analysts, Blue Teams, or anyone investigating security alerts.
+- Automating reputation and technical context checks for IPs and domains.
+- Centralizing and visualizing information from multiple sources in one place.
+
+### Technologies
+
+- Backend: Python 3.11, Flask, Flask-CORS, requests, python-dotenv
+- Frontend: HTML5, CSS3, JavaScript
+- External APIs: VirusTotal, AbuseIPDB, Shodan
+- Environment: VS Code, Windows, PowerShell
+
+### Project structure
+
+```bash
+Security Alert Enrichment Bot/
+├── src/
+│   ├── app.py
+│   ├── main.py
+│   ├── enrichers/
+│   └── ...
+├── frontend/
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── data/
+├── reports/
+├── requirements.txt
+├── dev-requirements.txt
+└── README.md
+```
+
+### Installation and usage
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/rodriveracr/Security-Alert-Enrichment-Bot.git
+   cd Security-Alert-Enrichment-Bot
+   ```
+
+2. Create the virtual environment and install dependencies:
+
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+   If you want to run tests or linting, also install the development dependencies:
+
+   ```bash
+   pip install -r dev-requirements.txt
+   ```
+
+3. Set your API keys in `.env`:
+
+   ```env
+   VT_API_KEY=your_virustotal_api_key_here
+   ABUSEIPDB_KEY=your_abuseipdb_api_key_here
+   SHODAN_KEY=your_shodan_api_key_here
    ```
 
 4. Start the backend:
@@ -104,22 +213,19 @@ Security Alert Enrichment Bot/
    python -m http.server 8080
    ```
 
-6. Open your browser at `http://localhost:8080` and use the form.
+6. Open `http://localhost:8080` in your browser.
 
-## Customization
+### Customization
 
 - Add new enrichers in `src/enrichers/`.
-- Modify the frontend in `frontend/index.html`, `script.js`, and `style.css`.
-- Change the port or IP in the backend and frontend as needed.
+- Update the UI in `frontend/index.html`, `frontend/script.js`, and `frontend/style.css`.
+- Adjust ports or paths as needed.
 
-## Contribution
+### Contributing
 
 - Pull requests and suggestions are welcome.
-- Document your changes and follow the modular structure.
+- Keep the modular structure and document your changes.
 
-## License
+### License
 
 MIT
-
----
-**Ready to use and improve!**
